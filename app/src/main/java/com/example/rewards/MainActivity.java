@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,8 +24,20 @@ public class MainActivity extends AppCompatActivity {
         mainActivity = this;
     }
 
+    public void Login(View view){
+        String sId = "A20349053";
+        String uName = ((EditText) findViewById(R.id.username_txt)).getText().toString();
+        String pswd = ((EditText) findViewById(R.id.password_txt)).getText().toString();
+
+        new LoginAsync(this).execute(sId, uName, pswd);
+    }
+
     public void CreateAccount(View view){
         Intent intent = new Intent(this, CreateAccountActivity.class);
         startActivity(intent);
+    }
+
+    public void sendResults(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 }

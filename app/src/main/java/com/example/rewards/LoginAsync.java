@@ -9,26 +9,23 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
-public class CreateAsync extends AsyncTask<String, Void, String> {
+public class LoginAsync extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "LoginAPIAyncTask";
     private static final String baseUrl =
             "http://inspirationrewardsapi-env.6mmagpm2pv.us-east-2.elasticbeanstalk.com";
-    private static final String loginEndPoint ="/profiles";
+    private static final String loginEndPoint ="/login";
     @SuppressLint("StaticFieldLeak")
-    private CreateAccountActivity mainActivity;
+    private MainActivity mainActivity;
 
-    public CreateAsync(CreateAccountActivity mainActivity) {
+    public LoginAsync(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
@@ -39,38 +36,23 @@ public class CreateAsync extends AsyncTask<String, Void, String> {
         // Normally we would parse the results and make use of the data
         // For this example, we just use the returned string size - empty is fail
         if (connectionResult.contains("error")) // If there is "error" in the results...
-            mainActivity.sendResults();
+            mainActivity.sendResults(connectionResult);
         else
-            mainActivity.sendResults();
+            mainActivity.sendResults(connectionResult);
 
     }
 
     @Override
     protected String doInBackground(String... strings) {
-        String stuId = "A20349053";
-        String uName = strings[0];
-        String pswd = strings[1];
-        String fname = strings[2];
-        String lname = strings[3];
-        String department = strings[4];
-        String position = strings[5];
-        String story = strings[6];
+        String stuId = strings[0];
+        String uName = strings[1];
+        String pswd = strings[2];
 
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("studentId", stuId);
             jsonObject.put("username", uName);
             jsonObject.put("password", pswd);
-            jsonObject.put("firstName", fname);
-            jsonObject.put("lastName", lname);
-            jsonObject.put("pointsToAward", 1000);
-            jsonObject.put("department", department);
-            jsonObject.put("story", story);
-            jsonObject.put("position", position);
-            jsonObject.put("admin", false);
-            jsonObject.put("location",  "Mountain View, California");
-            jsonObject.put("imageBytes",  "4AAQSkZJBAQA……K/hfdrDCF2=\n");
-
 
             return doAPICall(jsonObject);
 
