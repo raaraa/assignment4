@@ -36,7 +36,7 @@ public class LoginAsync extends AsyncTask<String, Void, String> {
         // Normally we would parse the results and make use of the data
         // For this example, we just use the returned string size - empty is fail
         if (connectionResult.contains("error")) // If there is "error" in the results...
-            mainActivity.sendResults(connectionResult);
+            mainActivity.loginFailed(connectionResult);
         else
             mainActivity.sendResults(connectionResult);
 

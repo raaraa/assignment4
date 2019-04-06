@@ -37,7 +37,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void sendResults(String s) {
+    public void loginFailed(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+    }
+
+    public void sendResults(String s) {
+        Intent intent = new Intent(this, YourProfileActivity.class);
+        intent.putExtra("key",s);
+        startActivity(intent);
     }
 }
