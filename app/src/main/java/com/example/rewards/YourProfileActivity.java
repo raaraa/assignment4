@@ -3,6 +3,9 @@ package com.example.rewards;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -18,6 +21,7 @@ public class YourProfileActivity extends AppCompatActivity {
     public TextView position;
     public TextView points_to_award;
     public TextView story;
+    public String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +48,34 @@ public class YourProfileActivity extends AppCompatActivity {
             position.setText(json_obj.getString("position"));
             //points_to_award.setText(json_obj.getInt("pointsToAward"));
 
+            password = json_obj.getString("password");
+
         }
         catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.leader_board:
+                Intent intent = new Intent(this, LeadboardActivity.class);
+                intent.putExtra("username", user_name.getText());
+                intent.putExtra("password", password);
+                startActivity(intent);
+                return true;
+            case R.id.edit_profile:
+                //
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
