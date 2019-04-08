@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +19,7 @@ public class LeadboardActivity extends AppCompatActivity {
     private RecyclerView recycler_view;
     private LeaderBoardAdapter leader_adapter;
     private List<User> user_list = new ArrayList<>();
+    private String all_users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,14 @@ public class LeadboardActivity extends AppCompatActivity {
     public void sendResults(String data) {
         //Toast.makeText(this, data, Toast.LENGTH_LONG).show();
         try{
-            JSONObject json_obj = new JSONObject(data);
+            JSONArray json_arr = new JSONArray(data);
+            for(int i=0; i<json_arr.length(); i++){
+                JSONObject json_obj = json_arr.getJSONObject(i);
+                User user = new User(json_obj.get("firstName").toString(),json_obj.get("lastName").toString(),
+                                    json_obj.get("department").toString(),json_obj.get("position").toString());
+                user_list.add(user);
+                leader_adapter.notifyDataSetChanged();
+            }
 
         }
         catch (JSONException e) {
