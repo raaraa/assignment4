@@ -1,7 +1,6 @@
 package com.example.rewards;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -10,26 +9,22 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
-public class CreateAsync extends AsyncTask<String, Void, String> {
-
+public class SendPointsAsync extends AsyncTask<JSONObject, Void, String> {
     private static final String TAG = "LoginAPIAyncTask";
     private static final String baseUrl =
             "http://inspirationrewardsapi-env.6mmagpm2pv.us-east-2.elasticbeanstalk.com";
-    private static final String loginEndPoint ="/profiles";
+    private static final String loginEndPoint ="/rewards";
     @SuppressLint("StaticFieldLeak")
-    private CreateAccountActivity mainActivity;
+    private AwardActivity mainActivity;
 
-    public CreateAsync(CreateAccountActivity mainActivity) {
+    public SendPointsAsync(AwardActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
@@ -47,32 +42,9 @@ public class CreateAsync extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String... strings) {
-        String stuId = "A20349053";
-        String uName = strings[0];
-        String pswd = strings[1];
-        String fname = strings[2];
-        String lname = strings[3];
-        String department = strings[4];
-        String position = strings[5];
-        String story = strings[6];
-
+    protected String doInBackground(JSONObject... params) {
+        JSONObject jsonObject = params[0];
         try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("studentId", stuId);
-            jsonObject.put("username", uName);
-            jsonObject.put("password", pswd);
-            jsonObject.put("firstName", fname);
-            jsonObject.put("lastName", lname);
-            jsonObject.put("pointsToAward", 1000);
-            jsonObject.put("department", department);
-            jsonObject.put("story", story);
-            jsonObject.put("position", position);
-            jsonObject.put("admin", true);
-            jsonObject.put("location",  "Mountain View, California");
-            jsonObject.put("imageBytes",  "4AAQSkZJBAQA……K/hfdrDCF2=\n");
-
-
             return doAPICall(jsonObject);
 
         } catch (Exception e) {

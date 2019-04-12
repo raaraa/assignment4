@@ -1,7 +1,6 @@
 package com.example.rewards;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -10,26 +9,24 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
-public class CreateAsync extends AsyncTask<String, Void, String> {
+public class UpdateAsync extends AsyncTask<String, Void, String> {
+
 
     private static final String TAG = "LoginAPIAyncTask";
     private static final String baseUrl =
             "http://inspirationrewardsapi-env.6mmagpm2pv.us-east-2.elasticbeanstalk.com";
     private static final String loginEndPoint ="/profiles";
     @SuppressLint("StaticFieldLeak")
-    private CreateAccountActivity mainActivity;
+    private EditProfileActivity mainActivity;
 
-    public CreateAsync(CreateAccountActivity mainActivity) {
+    public UpdateAsync(EditProfileActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
@@ -64,14 +61,12 @@ public class CreateAsync extends AsyncTask<String, Void, String> {
             jsonObject.put("password", pswd);
             jsonObject.put("firstName", fname);
             jsonObject.put("lastName", lname);
-            jsonObject.put("pointsToAward", 1000);
             jsonObject.put("department", department);
-            jsonObject.put("story", story);
             jsonObject.put("position", position);
-            jsonObject.put("admin", true);
+            jsonObject.put("story",story);
+            jsonObject.put("admin", false);
             jsonObject.put("location",  "Mountain View, California");
             jsonObject.put("imageBytes",  "4AAQSkZJBAQA……K/hfdrDCF2=\n");
-
 
             return doAPICall(jsonObject);
 
@@ -94,7 +89,7 @@ public class CreateAsync extends AsyncTask<String, Void, String> {
             URL url = new URL(uri.toString()); // Convert URI to URL
 
             connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");  // POST - others might use PUT, DELETE, GET
+            connection.setRequestMethod("PUT");  // POST - others might use PUT, DELETE, GET
 
             // Set the Content-Type and Accept properties to use JSON data
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");

@@ -3,7 +3,6 @@ package com.example.rewards;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -12,17 +11,43 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class CreateAccountActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity {
+
+    public EditText username;
+    public EditText password;
+    public EditText first_name;
+    public EditText last_name;
+    public EditText department;
+    public EditText position;
+    public EditText story;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_account);
 
+        Intent intent = getIntent();
+
+        username = findViewById(R.id.username);
+        username.setEnabled(false);
+        password = findViewById(R.id.password);
+        first_name = findViewById(R.id.first_name);
+        last_name = findViewById(R.id.last_name);
+        department = findViewById(R.id.department);
+        position = findViewById(R.id.position);
+        story = findViewById(R.id.story);
+
+        username.setText(intent.getStringExtra("username"));
+        password.setText(intent.getStringExtra("password"));
+        first_name.setText(intent.getStringExtra("firstname"));
+        last_name.setText(intent.getStringExtra("lastname"));
+        department.setText(intent.getStringExtra("department"));
+        position.setText(intent.getStringExtra("position"));
+        story.setText(intent.getStringExtra("story"));
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,7 +78,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                createAsync();
+                updateAsync();
             }
         });
 
@@ -67,7 +92,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public void createAsync(){
+    public void updateAsync(){
         String uName = ((EditText) findViewById(R.id.username)).getText().toString();
         String pswd = ((EditText) findViewById(R.id.password)).getText().toString();
         String fname = ((EditText) findViewById(R.id.first_name)).getText().toString();
@@ -76,12 +101,10 @@ public class CreateAccountActivity extends AppCompatActivity {
         String department = ((EditText) findViewById(R.id.department)).getText().toString();
         String story = ((EditText) findViewById(R.id.story)).getText().toString();
 
-        new CreateAsync(this).execute(uName, pswd, fname, lname, position, department, story);
+        new UpdateAsync(this).execute(uName, pswd, fname, lname, position, department, story);
     }
 
     public void sendResults(String s) {
-        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 }

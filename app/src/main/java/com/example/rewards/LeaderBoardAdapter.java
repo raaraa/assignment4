@@ -21,7 +21,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardHolder> 
     public LeaderBoardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.leader_board_row, parent, false);
         //view.setOnLongClickListener(mainActivity);
-        //view.setOnClickListener(mainActivity);
+        view.setOnClickListener(mainActivity);
         return new LeaderBoardHolder(view);
     }
 
@@ -30,6 +30,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardHolder> 
         User user = user_list.get(position);
         holder.full_name.setText(user.getLast_name()+ ", "+ user.getFirst_name());
         holder.department_and_title.setText(user.getDeparment() + ", " + user.getPosition());
+        holder.points.setText(user.getRewards_sent().toString());
     }
 
     @Override

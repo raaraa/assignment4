@@ -22,6 +22,8 @@ public class YourProfileActivity extends AppCompatActivity {
     public TextView points_to_award;
     public TextView story;
     public String password;
+    public String firstname;
+    public String lastname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +37,22 @@ public class YourProfileActivity extends AppCompatActivity {
         department = findViewById(R.id.department);
         position = findViewById(R.id.position);
         points_to_award = findViewById(R.id.points_to);
+        story = findViewById(R.id.story);
 
         Intent intent = getIntent();
         String data = intent.getStringExtra("key");
         try {
             JSONObject json_obj = new JSONObject(data);
-            full_name.setText(json_obj.getString("lastName")+ ", " +json_obj.getString("firstName") );
+            firstname =json_obj.getString("firstName");
+            lastname = json_obj.getString("lastName");
+            full_name.setText(lastname+ ", " +firstname);
             location.setText(json_obj.getString("location"));
             user_name.setText(json_obj.getString("username"));
             points_awarded.setText(json_obj.getString("location"));
             department.setText(json_obj.getString("department"));
             position.setText(json_obj.getString("position"));
-            //points_to_award.setText(json_obj.getInt("pointsToAward"));
+            story.setText(json_obj.getString("story"));
+            points_to_award.setText(json_obj.get("pointsToAward").toString());
 
             password = json_obj.getString("password");
 
@@ -73,6 +79,15 @@ public class YourProfileActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.edit_profile:
+                Intent new_intent = new Intent(this, EditProfileActivity.class);
+                new_intent.putExtra("username", user_name.getText());
+                new_intent.putExtra("password", password);
+                new_intent.putExtra("firstname", firstname);
+                new_intent.putExtra("lastname", lastname);
+                new_intent.putExtra("department", department.getText());
+                new_intent.putExtra("position", position.getText());
+                new_intent.putExtra("story", story.getText());
+                startActivity(new_intent);
                 //
             default:
                 return super.onOptionsItemSelected(item);
