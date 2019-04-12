@@ -2,14 +2,23 @@ package com.example.rewards;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class YourProfileActivity extends AppCompatActivity {
 
@@ -24,6 +33,12 @@ public class YourProfileActivity extends AppCompatActivity {
     public String password;
     public String firstname;
     public String lastname;
+
+    public JSONArray json_reward = new JSONArray();
+
+    private RecyclerView recycler_view;
+    private ArrayList<Reward> rewardArrayList = new ArrayList<>();
+    private RewardAdapter rAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +68,7 @@ public class YourProfileActivity extends AppCompatActivity {
             position.setText(json_obj.getString("position"));
             story.setText(json_obj.getString("story"));
             points_to_award.setText(json_obj.get("pointsToAward").toString());
+            json_reward = json_obj.getJSONArray("rewards");
 
             password = json_obj.getString("password");
 
@@ -60,6 +76,14 @@ public class YourProfileActivity extends AppCompatActivity {
         catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+        parseRewards(json_reward);
+
+        recycler_view = findViewById(R.id.reward_history);
+        rAdapter = new RewardAdapter();
+        recycler_view.setAdapter(rAdapter);
+        recycler_view.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -93,4 +117,69 @@ public class YourProfileActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void parseRewards(JSONArray jsonArray){
+        for(int i=0; i <jsonArray.length(); i++){
+            try {
+                JSONObject reward = jsonArray.getJSONObject(i);
+                rewardArrayList.add(new Reward(reward.getString("date"),reward.getString("name"),
+                                                reward.getString("notes"),reward.getString("value")));
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    //////////////////////////////////////////
+
+
+    class RewardViewHolder extends RecyclerView.ViewHolder {
+
+        TextView date;
+        TextView name;
+        TextView note;
+        TextView value;
+
+        RewardViewHolder(View view) {
+            super(view);
+            date = view.findViewById(R.id.date);
+            name = view.findViewById(R.id.name);
+            note = view.findViewById(R.id.note);
+            value = view.findViewById(R.id.value);
+        }
+
+    }
+
+//////////////////////////////////////////
+
+    public class RewardAdapter extends RecyclerView.Adapter<RewardViewHolder> {
+
+        @NonNull
+        @Override
+        public RewardViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.reward_entry, parent, false);
+
+            //itemView.setOnClickListener(MainActivity.this);
+
+            return new RewardViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RewardViewHolder holder, int position) {
+            Reward thisReward = rewardArrayList.get(position);
+
+            holder.date.setText(thisReward.getDate());
+            holder.name.setText(thisReward.getName());
+            holder.note.setText(thisReward.getNote());
+            holder.value.setText(thisReward.getValue());
+        }
+
+        @Override
+        public int getItemCount() {
+            return rewardArrayList.size();
+        }
+    }
 }
+
+

@@ -46,17 +46,19 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         int pos = recycler_view.getChildAdapterPosition(v);
         User user = user_list.get(pos);
-        Intent intent = new Intent(this, AwardActivity.class);
-        intent.putExtra("firstname", user.getFirst_name());
-        intent.putExtra("lastname", user.getLast_name());
-        intent.putExtra("department", user.getDeparment());
-        intent.putExtra("position", user.getPosition());
-        intent.putExtra("story", user.getStory());
-        intent.putExtra("pointsawarded", user.getRewards_sent().toString());
-        intent.putExtra("username", user.getUser_name());
-        intent.putExtra("sourceName", user_name);
-        intent.putExtra("sourcePsw", password);
-        startActivity(intent);
+        if(!user.getUser_name().equals(user_name)) {
+            Intent intent = new Intent(this, AwardActivity.class);
+            intent.putExtra("firstname", user.getFirst_name());
+            intent.putExtra("lastname", user.getLast_name());
+            intent.putExtra("department", user.getDeparment());
+            intent.putExtra("position", user.getPosition());
+            intent.putExtra("story", user.getStory());
+            intent.putExtra("pointsawarded", user.getRewards_sent().toString());
+            intent.putExtra("username", user.getUser_name());
+            intent.putExtra("sourceName", user_name);
+            intent.putExtra("sourcePsw", password);
+            startActivity(intent);
+        }
     }
 
     public void sendResults(String data) {
@@ -66,8 +68,11 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
             Integer rewards = 0;
             for(int i=0; i<json_arr.length(); i++){
                 JSONObject json_obj = json_arr.getJSONObject(i);
-                if(json_obj.get("rewards") != null){
-                    rewards = 0;
+                if(!json_obj.get("rewards").equals(null)){
+                    for(int j=0; j <json_obj.getJSONArray("rewards").length(); j++){
+                        JSONObject obj = (JSONObject) json_obj.getJSONArray("rewards").get(j);
+                        rewards += (int) obj.get("value");
+                    }
                 }
                 User user = new User(json_obj.get("firstName").toString(),json_obj.get("lastName").toString(),
                                     json_obj.get("department").toString(),json_obj.get("position").toString(),

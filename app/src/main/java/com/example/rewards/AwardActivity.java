@@ -130,7 +130,7 @@ public class AwardActivity extends AppCompatActivity {
 
     public void sendResults(String s) {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LeadboardActivity.class);
         startActivity(intent);
     }
 }
