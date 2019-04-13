@@ -1,17 +1,22 @@
 package com.example.rewards;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -33,6 +38,8 @@ public class YourProfileActivity extends AppCompatActivity {
     public String password;
     public String firstname;
     public String lastname;
+    private ImageView imageView;
+    String imgString;
 
     public JSONArray json_reward = new JSONArray();
 
@@ -53,6 +60,7 @@ public class YourProfileActivity extends AppCompatActivity {
         position = findViewById(R.id.position);
         points_to_award = findViewById(R.id.points_to);
         story = findViewById(R.id.story);
+        imageView = findViewById(R.id.profile_pic);
 
         Intent intent = getIntent();
         String data = intent.getStringExtra("key");
@@ -68,10 +76,15 @@ public class YourProfileActivity extends AppCompatActivity {
             position.setText(json_obj.getString("position"));
             story.setText(json_obj.getString("story"));
             points_to_award.setText(json_obj.get("pointsToAward").toString());
-            json_reward = json_obj.getJSONArray("rewards");
+            imgString = json_obj.getString("imageBytes");
 
             password = json_obj.getString("password");
 
+            byte[] imageBytes = Base64.decode(imgString,  Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            imageView.setImageBitmap(bitmap);
+
+            json_reward = json_obj.getJSONArray("rewards");
         }
         catch (JSONException e) {
             e.printStackTrace();

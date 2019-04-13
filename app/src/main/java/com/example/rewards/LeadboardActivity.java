@@ -1,10 +1,13 @@
 package com.example.rewards;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -74,9 +77,13 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
                         rewards += (int) obj.get("value");
                     }
                 }
+                String imgString = json_obj.getString("imageBytes");
+                byte[] imageBytes = Base64.decode(imgString,  Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 User user = new User(json_obj.get("firstName").toString(),json_obj.get("lastName").toString(),
                                     json_obj.get("department").toString(),json_obj.get("position").toString(),
-                                    json_obj.get("story").toString(),json_obj.get("username").toString(),rewards);
+                                    json_obj.get("story").toString(),json_obj.get("username").toString(),rewards,
+                                    bitmap);
                 user_list.add(user);
                 leader_adapter.notifyDataSetChanged();
             }

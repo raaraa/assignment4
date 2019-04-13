@@ -1,6 +1,7 @@
 package com.example.rewards;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 
 public class User {
 
@@ -11,8 +12,10 @@ public class User {
     private String position;
     private String story;
     private Integer rewards_sent;
+    private Bitmap picture;
 
-    public User(String first_name, String last_name, String department, String position, String story, String user_name,Integer rewards_sent) {
+    public User(String first_name, String last_name, String department, String position,
+                String story, String user_name,Integer rewards_sent, Bitmap picture) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.deparment = department;
@@ -20,6 +23,7 @@ public class User {
         this.story = story;
         this.user_name = user_name;
         this.rewards_sent = rewards_sent;
+        this.picture = picture;
     }
 
     public String getUser_name() {
@@ -41,6 +45,10 @@ public class User {
     public String getStory() { return story; }
 
     public Integer getRewards_sent(){ return rewards_sent; }
+
+    public Bitmap getPicture() {
+        return picture;
+    }
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;

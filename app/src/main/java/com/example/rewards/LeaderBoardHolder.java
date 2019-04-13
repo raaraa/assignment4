@@ -11,6 +11,7 @@ public class LeaderBoardHolder extends RecyclerView.ViewHolder {
     public TextView full_name;
     public TextView department_and_title;
     public TextView points;
+    public ImageView photo;
 
     public LeaderBoardHolder(View itemView){
         super(itemView);
@@ -18,5 +19,6 @@ public class LeaderBoardHolder extends RecyclerView.ViewHolder {
         full_name = itemView.findViewById(R.id.full_name);
         department_and_title = itemView.findViewById(R.id.department_and_title);
         points = itemView.findViewById(R.id.total_points);
+        photo = itemView.findViewById(R.id.photo);
     }
 }
