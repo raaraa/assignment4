@@ -39,6 +39,7 @@ public class YourProfileActivity extends AppCompatActivity {
     public String firstname;
     public String lastname;
     private ImageView imageView;
+    public TextView reward_view;
     String imgString;
 
     public JSONArray json_reward = new JSONArray();
@@ -61,6 +62,7 @@ public class YourProfileActivity extends AppCompatActivity {
         points_to_award = findViewById(R.id.points_to);
         story = findViewById(R.id.story);
         imageView = findViewById(R.id.profile_pic);
+        reward_view = findViewById(R.id.reward_view);
 
         Intent intent = getIntent();
         String data = intent.getStringExtra("key");
@@ -97,6 +99,13 @@ public class YourProfileActivity extends AppCompatActivity {
         rAdapter = new RewardAdapter();
         recycler_view.setAdapter(rAdapter);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
+
+        int points = 0;
+        for(int i=0; i<rewardArrayList.size(); i++){
+            points += Integer.parseInt(rewardArrayList.get(i).getValue());
+        }
+        points_awarded.setText(Integer.toString(points));
+        reward_view.setText("Reward History: "+ "("+Integer.toString(rewardArrayList.size())+")");
     }
 
     @Override
