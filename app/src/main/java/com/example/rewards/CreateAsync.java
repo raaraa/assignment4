@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -39,8 +40,8 @@ public class CreateAsync extends AsyncTask<String, Void, String> {
 
         // Normally we would parse the results and make use of the data
         // For this example, we just use the returned string size - empty is fail
-        if (connectionResult.contains("error")) // If there is "error" in the results...
-            mainActivity.sendResults(connectionResult);
+        if (connectionResult.contains("error"))
+            mainActivity.error(connectionResult);
         else
             mainActivity.sendResults(connectionResult);
 

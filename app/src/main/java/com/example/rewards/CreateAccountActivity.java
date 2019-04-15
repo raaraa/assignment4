@@ -40,6 +40,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -206,6 +208,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         view = inflater.inflate(R.layout.save_changes, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.logo);
         builder.setTitle("Profile Picture");
         builder.setMessage("Take picture from:");
         builder.setView(view);
@@ -312,6 +315,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         final View view = inflater.inflate(R.layout.save_changes, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.logo);
         builder.setTitle("Save Changes?");
         builder.setView(view);
 
@@ -346,9 +350,31 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     public void sendResults(String s) {
-        Toast.makeText(this, "User created sucessfully", Toast.LENGTH_LONG).show();
+        makeCustomToast(this, "User created sucessfully", Toast.LENGTH_LONG);
         Intent intent = new Intent(this, YourProfileActivity.class);
         intent.putExtra("key", s);
         startActivity(intent);
+    }
+
+    public void error(String s){
+        try{
+            JSONObject json_error = new JSONObject(s);
+            JSONObject message = (JSONObject) json_error.get("errordetails");
+
+            Toast.makeText(this, message.getString("message"), Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void makeCustomToast(Context context, String message, int time) {
+        Toast toast = Toast.makeText(context, message, time);
+        View toastView = toast.getView();
+        toastView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+        TextView tv = toast.getView().findViewById(android.R.id.message);
+        tv.setPadding(100, 50, 100, 50);
+        tv.setTextColor(Color.WHITE);
+        toast.show();
     }
 }

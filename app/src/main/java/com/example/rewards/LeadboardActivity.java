@@ -26,6 +26,7 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
     private List<User> user_list = new ArrayList<>();
     public String user_name;
     public String password;
+    public String source_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
         Intent intent = getIntent();
         user_name = intent.getStringExtra("username");
         password = intent.getStringExtra("password");
+        source_name = intent.getStringExtra("sourceName");
 
         recycler_view = findViewById(R.id.recycler);
         leader_adapter = new LeaderBoardAdapter(this, user_list);
@@ -58,8 +60,9 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
             intent.putExtra("story", user.getStory());
             intent.putExtra("pointsawarded", user.getRewards_sent().toString());
             intent.putExtra("username", user.getUser_name());
-            intent.putExtra("sourceName", user_name);
+            intent.putExtra("sourceUserName", user_name);
             intent.putExtra("sourcePsw", password);
+            intent.putExtra("sourceName", source_name);
             intent.putExtra("imagestr", user.getImagestr());
             startActivity(intent);
         }

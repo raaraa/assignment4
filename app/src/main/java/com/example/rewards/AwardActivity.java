@@ -122,7 +122,9 @@ public class AwardActivity extends AppCompatActivity {
         final View view = inflater.inflate(R.layout.save_changes, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Save Changes?");
+        builder.setIcon(R.drawable.logo);
+        builder.setTitle("Add Rewards Points?");
+        builder.setMessage("Add rewards for ");
         builder.setView(view);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -153,15 +155,15 @@ public class AwardActivity extends AppCompatActivity {
         try{
             target.put("studentId", "A20349053");
             target.put("username", intent.getStringExtra("username"));
-            target.put("name", intent.getStringExtra("firstname")+ " " + intent.getStringExtra("lastname"));
-            target.put("date", "04/12/2019");
+            target.put("name", intent.getStringExtra("sourceName"));
+            target.put("date", formattedDate);
             target.put("notes", comments.getText().toString());
             target.put("value", Integer.parseInt(points_to_send.getText().toString()));
 
             json_to_send.put("target", target);
 
             source.put("studentId", "A20349053");
-            source.put("username", intent.getStringExtra("sourceName"));
+            source.put("username", intent.getStringExtra("sourceUserName"));
             source.put("password", intent.getStringExtra("sourcePsw"));
 
             json_to_send.put("source", source);

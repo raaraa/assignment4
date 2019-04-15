@@ -121,6 +121,7 @@ public class EditProfileActivity extends AppCompatActivity {
         final View view = inflater.inflate(R.layout.save_changes, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.logo);
         builder.setTitle("Save Changes?");
         builder.setView(view);
 
