@@ -2,15 +2,24 @@ package com.example.rewards;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -22,6 +31,10 @@ public class EditProfileActivity extends AppCompatActivity {
     public EditText department;
     public EditText position;
     public EditText story;
+    public TextView story_view;
+    public ImageView imageView;
+    public TextView add_pic;
+    public static int MAX_CHARS = 360;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +51,11 @@ public class EditProfileActivity extends AppCompatActivity {
         department = findViewById(R.id.department);
         position = findViewById(R.id.position);
         story = findViewById(R.id.story);
+        imageView = findViewById(R.id.imageView);
+        add_pic = findViewById(R.id.add_pic);
+        story_view = findViewById(R.id.story_view);
+        story.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CHARS)});
+        addTextListener();
 
         username.setText(intent.getStringExtra("username"));
         password.setText(intent.getStringExtra("password"));
@@ -46,6 +64,13 @@ public class EditProfileActivity extends AppCompatActivity {
         department.setText(intent.getStringExtra("department"));
         position.setText(intent.getStringExtra("position"));
         story.setText(intent.getStringExtra("story"));
+
+        String imgString = intent.getStringExtra("image");
+        byte[] imageBytes = Base64.decode(imgString,  Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        imageView.setImageBitmap(bitmap);
+
+        add_pic.setBackgroundColor(Color.TRANSPARENT);
     }
 
 
@@ -65,6 +90,30 @@ public class EditProfileActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void addTextListener() {
+        story.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Nothing to do here
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+                // Nothing to do here
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                int len = s.toString().length();
+                String countText = "Your Story: (" + len + " of " + MAX_CHARS + ")";
+                story_view.setText(countText);
+            }
+        });
     }
 
     public void saveProfile() {

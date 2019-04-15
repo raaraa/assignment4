@@ -134,9 +134,9 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="138dp"
-        android:layout_height="27dp"
+        android:id="@+id/story_view"
+        android:layout_width="297dp"
+        android:layout_height="29dp"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         android:text="Your Story:"

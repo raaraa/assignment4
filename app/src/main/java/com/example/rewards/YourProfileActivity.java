@@ -124,6 +124,7 @@ public class YourProfileActivity extends AppCompatActivity {
                 new_intent.putExtra("department", department.getText());
                 new_intent.putExtra("position", position.getText());
                 new_intent.putExtra("story", story.getText());
+                new_intent.putExtra("image", imgString);
                 startActivity(new_intent);
                 //
             default:

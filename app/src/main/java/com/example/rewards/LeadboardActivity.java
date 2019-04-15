@@ -60,6 +60,7 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
             intent.putExtra("username", user.getUser_name());
             intent.putExtra("sourceName", user_name);
             intent.putExtra("sourcePsw", password);
+            intent.putExtra("imagestr", user.getImagestr());
             startActivity(intent);
         }
     }
@@ -83,7 +84,7 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
                 User user = new User(json_obj.get("firstName").toString(),json_obj.get("lastName").toString(),
                                     json_obj.get("department").toString(),json_obj.get("position").toString(),
                                     json_obj.get("story").toString(),json_obj.get("username").toString(),rewards,
-                                    bitmap);
+                                    bitmap, imgString);
                 user_list.add(user);
                 leader_adapter.notifyDataSetChanged();
             }

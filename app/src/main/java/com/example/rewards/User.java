@@ -13,9 +13,11 @@ public class User {
     private String story;
     private Integer rewards_sent;
     private Bitmap picture;
+    private String location;
+    private String imagestr;
 
     public User(String first_name, String last_name, String department, String position,
-                String story, String user_name,Integer rewards_sent, Bitmap picture) {
+                String story, String user_name,  Integer rewards_sent, Bitmap picture, String imagestr) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.deparment = department;
@@ -24,6 +26,7 @@ public class User {
         this.user_name = user_name;
         this.rewards_sent = rewards_sent;
         this.picture = picture;
+        this.imagestr = imagestr;
     }
 
     public String getUser_name() {
@@ -48,6 +51,10 @@ public class User {
 
     public Bitmap getPicture() {
         return picture;
+    }
+
+    public String getImagestr() {
+        return imagestr;
     }
 
     public void setUser_name(String user_name) {

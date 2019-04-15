@@ -2,15 +2,22 @@ package com.example.rewards;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +37,11 @@ public class AwardActivity extends AppCompatActivity {
     public TextView points_awarded;
     public EditText comments;
     public EditText points_to_send;
+    private ImageView imageView;
+    public TextView comment_view;
+    String imgString;
     Intent intent;
+    public static int MAX_CHARS = 80;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +55,11 @@ public class AwardActivity extends AppCompatActivity {
         points_awarded = findViewById(R.id.points_awarded);
         comments = findViewById(R.id.comments);
         points_to_send = findViewById(R.id.points_to_send);
+        imageView = findViewById(R.id.profile_pic);
+        comment_view = findViewById(R.id.comment_view);
+
+        comments.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CHARS)});
+        addTextListener();
 
         intent = getIntent();
         full_name.setText(intent.getStringExtra("lastname") +", "+ intent.getStringExtra("firstname"));
@@ -51,6 +67,11 @@ public class AwardActivity extends AppCompatActivity {
         position.setText(intent.getStringExtra("position"));
         story.setText(intent.getStringExtra("story"));
         points_awarded.setText(intent.getStringExtra("pointsawarded"));
+        imgString = intent.getStringExtra("imagestr");
+
+        byte[] imageBytes = Base64.decode(imgString,  Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        imageView.setImageBitmap(bitmap);
     }
 
     @Override
@@ -69,6 +90,30 @@ public class AwardActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void addTextListener() {
+        comments.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Nothing to do here
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+                // Nothing to do here
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                int len = s.toString().length();
+                String countText = "Comment: (" + len + " of " + MAX_CHARS + ")";
+                comment_view.setText(countText);
+            }
+        });
     }
 
     public void savePoints(){

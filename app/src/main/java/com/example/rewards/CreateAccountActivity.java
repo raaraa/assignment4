@@ -1,18 +1,32 @@
 package com.example.rewards;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,22 +43,41 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Locale;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
     private int REQUEST_IMAGE_GALLERY = 1;
     private int REQUEST_IMAGE_CAPTURE = 2;
+    public static int MAX_CHARS = 360;
     private File currentImageFile;
     private ImageView imageView;
     private TextView add_pic;
     private String profile_picture;
 
+    private LocationManager locationManager;
+    private Location currentLocation;
+    private Criteria criteria;
+    private String location;
+    public EditText story;
+    public TextView story_view;
+
+    private static int MY_LOCATION_REQUEST_CODE = 329;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_account);
+
+        story = findViewById(R.id.story);
+        story_view = findViewById(R.id.story_view);
+        story.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CHARS)});
+        addTextListener();
 
         getSupportActionBar().setTitle("  Create Profile");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -57,6 +90,97 @@ public class CreateAccountActivity extends AppCompatActivity {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
+        //
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        criteria = new Criteria();
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        criteria.setAccuracy(Criteria.ACCURACY_MEDIUM);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setSpeedRequired(false);
+        //
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    },
+                    MY_LOCATION_REQUEST_CODE);
+        } else {
+            setLocation();
+        }
+
+    }
+
+    private void addTextListener() {
+        story.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Nothing to do here
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+                // Nothing to do here
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                int len = s.toString().length();
+                String countText = "Your Story: (" + len + " of " + MAX_CHARS + ")";
+                story_view.setText(countText);
+            }
+        });
+    }
+
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull
+            String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == MY_LOCATION_REQUEST_CODE) {
+            if (permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
+                    grantResults[0] == PERMISSION_GRANTED) {
+                setLocation();
+                return;
+            }
+        }
+        location = "No Permission";
+    }
+
+    @SuppressLint("MissingPermission")
+    private void setLocation() {
+
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+
+        currentLocation = locationManager.getLastKnownLocation(bestProvider);
+        if (currentLocation != null) {
+            String place = getPlace(currentLocation);
+            location = place;
+
+        } else {
+            location = "Location Unavailable";
+        }
+    }
+
+    private String getPlace(Location loc) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocation(loc.getLatitude(), loc.getLongitude(), 1);
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String zip = addresses.get(0).getPostalCode();
+            return city + ", " + state;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     @Override
@@ -216,8 +340,9 @@ public class CreateAccountActivity extends AppCompatActivity {
         String position = ((EditText) findViewById(R.id.position)).getText().toString();
         String department = ((EditText) findViewById(R.id.department)).getText().toString();
         String story = ((EditText) findViewById(R.id.story)).getText().toString();
+        String s = location;
 
-        new CreateAsync(this).execute(uName, pswd, fname, lname, position, department, story, profile_picture);
+        new CreateAsync(this).execute(uName, pswd, fname, lname, position, department, story, profile_picture, location);
     }
 
     public void sendResults(String s) {

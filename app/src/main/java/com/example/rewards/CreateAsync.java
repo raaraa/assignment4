@@ -57,6 +57,7 @@ public class CreateAsync extends AsyncTask<String, Void, String> {
         String position = strings[5];
         String story = strings[6];
         String profile_picture = strings[7];
+        String location = strings[8];
 
         try {
             JSONObject jsonObject = new JSONObject();
@@ -70,7 +71,7 @@ public class CreateAsync extends AsyncTask<String, Void, String> {
             jsonObject.put("story", story);
             jsonObject.put("position", position);
             jsonObject.put("admin", true);
-            jsonObject.put("location",  "Mountain View, California");
+            jsonObject.put("location",  location);
             jsonObject.put("imageBytes",  profile_picture);
 
             return doAPICall(jsonObject);
