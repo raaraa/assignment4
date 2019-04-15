@@ -17,6 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class LeadboardActivity extends AppCompatActivity implements View.OnClickListener {
@@ -89,6 +91,12 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
                                     json_obj.get("story").toString(),json_obj.get("username").toString(),rewards,
                                     bitmap, imgString);
                 user_list.add(user);
+                Collections.sort(user_list, new Comparator<User>() {
+                    @Override
+                    public int compare(User o1, User o2) {
+                        return o2.getRewards_sent().compareTo(o1.getRewards_sent());
+                    }
+                });
                 leader_adapter.notifyDataSetChanged();
             }
         }

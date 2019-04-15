@@ -1,9 +1,11 @@
 package com.example.rewards;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -176,8 +178,21 @@ public class AwardActivity extends AppCompatActivity {
     }
 
     public void sendResults(String s) {
-        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        makeCustomToast(this, s, Toast.LENGTH_LONG);
         Intent intent = new Intent(this, LeadboardActivity.class);
+        //intent.putExtra("username",intent.getStringExtra("sourceUserName"));
+        //intent.putExtra("password", intent.getStringExtra("sourcePsw"));
+
         startActivity(intent);
+    }
+
+    public static void makeCustomToast(Context context, String message, int time) {
+        Toast toast = Toast.makeText(context, message, time);
+        View toastView = toast.getView();
+        toastView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+        TextView tv = toast.getView().findViewById(android.R.id.message);
+        tv.setPadding(100, 50, 100, 50);
+        tv.setTextColor(Color.WHITE);
+        toast.show();
     }
 }
