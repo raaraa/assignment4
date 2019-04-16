@@ -122,7 +122,7 @@ public class YourProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, LeadboardActivity.class);
                 intent.putExtra("username", user_name.getText());
                 intent.putExtra("password", password);
-                intent.putExtra("sourceName", firstname + " " + lastname);
+                intent.putExtra("name", firstname + " " + lastname);
                 startActivity(intent);
                 return true;
             case R.id.edit_profile:

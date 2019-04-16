@@ -38,7 +38,7 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
         Intent intent = getIntent();
         user_name = intent.getStringExtra("username");
         password = intent.getStringExtra("password");
-        source_name = intent.getStringExtra("sourceName");
+        source_name = intent.getStringExtra("name");
 
         recycler_view = findViewById(R.id.recycler);
         leader_adapter = new LeaderBoardAdapter(this, user_list);
@@ -74,8 +74,9 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
         //Toast.makeText(this, data, Toast.LENGTH_LONG).show();
         try{
             JSONArray json_arr = new JSONArray(data);
-            Integer rewards = 0;
+            Integer rewards ;
             for(int i=0; i<json_arr.length(); i++){
+                rewards = 0;
                 JSONObject json_obj = json_arr.getJSONObject(i);
                 if(!json_obj.get("rewards").equals(null)){
                     for(int j=0; j <json_obj.getJSONArray("rewards").length(); j++){

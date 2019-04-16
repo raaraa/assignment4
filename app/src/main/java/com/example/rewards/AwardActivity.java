@@ -179,11 +179,13 @@ public class AwardActivity extends AppCompatActivity {
 
     public void sendResults(String s) {
         makeCustomToast(this, s, Toast.LENGTH_LONG);
-        Intent intent = new Intent(this, LeadboardActivity.class);
-        //intent.putExtra("username",intent.getStringExtra("sourceUserName"));
-        //intent.putExtra("password", intent.getStringExtra("sourcePsw"));
+        Intent new_intent = new Intent(this, LeadboardActivity.class);
+        new_intent.putExtra("username",intent.getStringExtra("sourceUserName"));
+        new_intent.putExtra("password", intent.getStringExtra("sourcePsw"));
+        new_intent.putExtra("name", intent.getStringExtra("sourceName"));
 
-        startActivity(intent);
+
+        startActivity(new_intent);
     }
 
     public static void makeCustomToast(Context context, String message, int time) {
