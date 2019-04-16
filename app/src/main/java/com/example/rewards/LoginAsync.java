@@ -24,9 +24,16 @@ public class LoginAsync extends AsyncTask<String, Void, String> {
     private static final String loginEndPoint ="/login";
     @SuppressLint("StaticFieldLeak")
     private MainActivity mainActivity;
+    private EditProfileActivity editProfileActivity;
+    private boolean cameFromEdit = false;
 
     public LoginAsync(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+    }
+
+    public LoginAsync(EditProfileActivity editProfileActivity) {
+        this.editProfileActivity = editProfileActivity;
+        this.cameFromEdit = true;
     }
 
 
@@ -37,6 +44,8 @@ public class LoginAsync extends AsyncTask<String, Void, String> {
         // For this example, we just use the returned string size - empty is fail
         if (connectionResult.contains("error")) // If there is "error" in the results...
             mainActivity.loginFailed(connectionResult);
+        else if(cameFromEdit)
+            editProfileActivity.logBack(connectionResult);
         else
             mainActivity.sendResults(connectionResult);
 

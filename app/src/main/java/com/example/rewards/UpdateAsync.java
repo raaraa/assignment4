@@ -53,6 +53,7 @@ public class UpdateAsync extends AsyncTask<String, Void, String> {
         String department = strings[4];
         String position = strings[5];
         String story = strings[6];
+        String image = strings[7];
 
         try {
             JSONObject jsonObject = new JSONObject();
@@ -66,7 +67,7 @@ public class UpdateAsync extends AsyncTask<String, Void, String> {
             jsonObject.put("story",story);
             jsonObject.put("admin", false);
             jsonObject.put("location",  "Mountain View, California");
-            jsonObject.put("imageBytes",  "4AAQSkZJBAQA……K/hfdrDCF2=\n");
+            jsonObject.put("imageBytes",  image);
 
             return doAPICall(jsonObject);
 

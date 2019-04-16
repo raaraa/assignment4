@@ -35,6 +35,11 @@ public class LeadboardActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.leader_board);
 
+        getSupportActionBar().setTitle("  Inspiration Leaderboard");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.arrow_with_logo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         Intent intent = getIntent();
         user_name = intent.getStringExtra("username");
         password = intent.getStringExtra("password");

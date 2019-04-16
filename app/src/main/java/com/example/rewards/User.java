@@ -13,7 +13,7 @@ public class User {
     private String story;
     private Integer rewards_sent;
     private Bitmap picture;
-    private String location;
+    private boolean green = false;
     private String imagestr;
 
     public User(String first_name, String last_name, String department, String position,
@@ -57,6 +57,10 @@ public class User {
         return imagestr;
     }
 
+    public boolean getGreen(){
+        return green;
+    }
+
     public void setUser_name(String user_name) {
         this.user_name = user_name;
     }
@@ -72,6 +76,8 @@ public class User {
     public void setDeparment(String deparment) {
         this.deparment = deparment;
     }
+
+    public void setGreen(boolean bool){ this.green = bool;}
 
     public void setStory(String story){ this.story = story;
     }

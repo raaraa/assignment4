@@ -50,6 +50,10 @@ public class AwardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.award_activity);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.icon);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         full_name = findViewById(R.id.full_name);
         department = findViewById(R.id.department);
         position = findViewById(R.id.position);

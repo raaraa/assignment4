@@ -113,6 +113,8 @@ public class CreateAccountActivity extends AppCompatActivity {
             setLocation();
         }
 
+
+
     }
 
     private void addTextListener() {
@@ -344,7 +346,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         String position = ((EditText) findViewById(R.id.position)).getText().toString();
         String department = ((EditText) findViewById(R.id.department)).getText().toString();
         String story = ((EditText) findViewById(R.id.story)).getText().toString();
-        String s = location;
 
         new CreateAsync(this).execute(uName, pswd, fname, lname, position, department, story, profile_picture, location);
     }

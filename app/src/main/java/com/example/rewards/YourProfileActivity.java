@@ -53,6 +53,11 @@ public class YourProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_login);
 
+        getSupportActionBar().setTitle("  Your Profile");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.icon);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         full_name = findViewById(R.id.full_name);
         location = findViewById(R.id.location);
         user_name = findViewById(R.id.user_num);
